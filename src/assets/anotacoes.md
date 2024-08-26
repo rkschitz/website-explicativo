@@ -1,0 +1,1 @@
+Imagens que renderizam dentro de assets
