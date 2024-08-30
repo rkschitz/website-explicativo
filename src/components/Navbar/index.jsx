@@ -6,23 +6,23 @@ export default function Navbar() {
     <nav className="navbar">
       <ul className="nav-menu">
         <li className="nav-item">
-          <a href="/" className="nav-link">HTML</a>
+          <a href="/html" className="nav-link">HTML</a>
         </li>
         <li className="nav-item">
-          <a href="/" className="nav-link">CSS</a>
+          <a href="/css" className="nav-link">CSS</a>
         </li>
         <li className="nav-item">
-          <a href="/" className="nav-link">JavaScript no Frontend</a>
+          <a href="/javascript" className="nav-link">JavaScript no Frontend</a>
         </li>
         <a href="/" className="nav-logo"><img src={Logo}/></a>
         <li className="nav-item">
-          <a href="/" className="nav-link">React</a>
+          <a href="/react" className="nav-link">React</a>
         </li>
         <li className="nav-item">
-          <a href="/" className="nav-link">Node.js</a>
+          <a href="/node" className="nav-link">Node.js</a>
         </li>
         <li className="nav-item">
-          <a href="/" className="nav-link">DevOps (GHPages e PM2/Docker)</a>
+          <a href="/devops" className="nav-link">DevOps (GHPages e PM2/Docker)</a>
         </li>
       </ul>
       <ul className="nav-menu-mobile">

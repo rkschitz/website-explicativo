@@ -7,6 +7,11 @@ import Footer from './components/Footer';
 import HTML from './views/Html';
 import Node from './views/Node';
 import CSS from './views/Css';
+import Javascript from './views/Javascript';  
+import ReactPage from './views/React';
+import Devops from './views/Devops';
+
+
 
 const router = createBrowserRouter([
   {
@@ -22,8 +27,23 @@ const router = createBrowserRouter([
     element: <CSS />
   },
   {
+    path: "/javascript",
+    element: <Javascript />,
+  },
+  {
+    path: "/react",
+    element: <ReactPage />,
+  },
+  {
     path: "/node",
     element: <Node />
+  },
+  {
+    path: "/devops",
+    element: <Devops />,
+  },
+  {
+
   }
 ]);
 
