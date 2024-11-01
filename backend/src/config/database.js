@@ -8,11 +8,11 @@ class Database {
 
     Init() {
         this.db = new Sequelize({
-            database: "projetoFullStack",
+            database: "website",
             host: "localhost",
             username: "root",
             dialect: "mysql",
-            password: "Ruhankaio2005",
+            password: "",
 
         });
     }

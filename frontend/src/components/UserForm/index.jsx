@@ -1,82 +1,87 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createUser, updateUser } from '../../api/user';
+import { createUser, loginUser } from '../../api/user';
 import { AuthContext } from '../../auth/Context';
 
-function UserModal({ show, handleClose, setIsUpdate, user }) {
-    const { id } = useContext(AuthContext);
+function UserModal({ show, handleClose }) {
 
-    const [userId, setUserId] = useState('');
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [role, setRole] = useState('viewer'); // Valor padrão para o role
-
-    useEffect(() => {
-        if (user) {
-            setUserId(user.id); // Preencher o ID (não será alterado)
-            setNome(user.nome);
-            setEmail(user.email);
-            setRole(user.role);
-        } else {
-            resetForm(); // Resetar se for um novo usuário
-        }
-    }, [user]);
+    const [role, setRole] = useState('viewer');
 
     const resetForm = () => {
         setUserId('');
         setNome('');
         setEmail('');
         setSenha('');
-        setRole('viewer'); // Resetar o role para o valor padrão
+        setRole('viewer');
     };
 
     const handleSubmit = async () => {
-        const newUser = {
-            nome,
-            email,
-            senha,
-            role,
-        };
-
-        try {
-            if (user) {
-                // Atualiza o usuário
-                await updateUser(userId, newUser);
-                console.log('Usuário atualizado com sucesso!');
-            } else {
-                // Cria novo usuário
-                await createUser(newUser);
-                console.log('Novo usuário criado com sucesso!');
+        if (isCreate == true) {
+            const newUser = {
+                nome,
+                email,
+                senha,
+                role,
+            };
+            try {
+                const response = await createUser(newUser);
+                if (response) {
+                    const loginResponse = await loginUser(response.email, response.senha)
+                    if (loginResponse.data.token) {
+                        if (response.data.token) {
+                            login(response.data.token);
+                            return handleClose();
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log(e)
             }
-
-            setIsUpdate(true);
-            handleClose();
-        } catch (error) {
-            console.error('Erro ao salvar o usuário:', error);
+        } else {
+            try {
+                const response = await loginUser(email, senha);
+                console.log(response)
+                if (response.data.token) {
+                    login(response.data.token);
+                    return handleClose();
+                }
+            } catch (e) {
+                console.log(e)
+            }
         }
     };
+
+    const [isCreate, setIsCreate] = useState(false)
+
+    const toggleState = () => {
+        setIsCreate(!isCreate);
+    }
 
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{user ? 'Alterar Usuário' : 'Adicionar Novo Usuário'}</Modal.Title>
+                    <Modal.Title>{isCreate ? 'Cadastre-se' : 'Login'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
-                        <div className="mb-3">
-                            <label className="form-label">Nome</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={nome}
-                                onChange={(e) => setNome(e.target.value)}
-                                required
-                            />
-                        </div>
+                        {isCreate === true &&
+                            <div className="mb-3">
+                                <label className="form-label">Nome</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={nome}
+                                    onChange={(e) => setNome(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        }
                         <div className="mb-3">
                             <label className="form-label">Email</label>
                             <input
@@ -98,18 +103,21 @@ function UserModal({ show, handleClose, setIsUpdate, user }) {
                             />
                         </div>
                         {role === 'admin' && (
+                            <div className="mb-3">
+                                <label className="form-label">Role</label>
+                                <select
+                                    className="form-control"
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                    required
+                                >
+                                    <option value="viewer">Viewer</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>)}
                         <div className="mb-3">
-                            <label className="form-label">Role</label>
-                            <select
-                                className="form-control"
-                                value={role}
-                                onChange={(e) => setRole(e.target.value)}
-                                required
-                            >
-                                <option value="viewer">Viewer</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>)}
+                            <a onClick={toggleState}>{isCreate ? "Login" : "Cadastre-se"}</a>
+                        </div>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

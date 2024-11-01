@@ -7,7 +7,7 @@ import { AuthContext } from '../../auth/Context';
 
 export default function Header() {
 
-    const { token, role } = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
 
     return (
 
@@ -22,9 +22,7 @@ export default function Header() {
                         </Link>
                         <Link to="/favorites"><li>Favoritos</li></Link>
                         <Link to="/feed"><li>Feed</li></Link>
-                        {token && <Link to="/profile">Perfil</Link>}
                         {token && <LogoutButton />}
-                        <Link to="/suggestion"><li>Sugestão</li></Link>
                     </ul>
                 </nav>
             </header>
