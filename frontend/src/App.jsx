@@ -11,6 +11,7 @@ import React, { useEffect } from 'react';
 import Profile from './pages/Profile';
 import Favorites from './pages/Favorites';
 import BreedFeed from './pages/Breeds';
+import Suggestion from './pages/Suggestion';
 
 function App() {
 
@@ -31,7 +32,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/feed" element={<BreedFeed />} />
+          <Route path="/suggestion" element={<Suggestion />} />
         </Route>
         {user ? '' : <Route path="/login" element={<Login />} />}
         {user ? '' : <Route path="/register" element={<Register />} />}

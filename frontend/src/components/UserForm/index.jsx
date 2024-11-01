@@ -5,12 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { createUser, loginUser } from '../../api/user';
 import { AuthContext } from '../../auth/Context';
 
+
 function UserModal({ show, handleClose }) {
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [role, setRole] = useState('viewer');
+    const { login } = useContext(AuthContext);
 
     const resetForm = () => {
         setUserId('');
@@ -45,7 +47,6 @@ function UserModal({ show, handleClose }) {
         } else {
             try {
                 const response = await loginUser(email, senha);
-                console.log(response)
                 if (response.data.token) {
                     login(response.data.token);
                     return handleClose();
