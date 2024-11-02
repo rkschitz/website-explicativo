@@ -7,11 +7,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { AuthProvider } from './auth/Context';
 import PrivateRoute from './components/PrivateRoute';
-import React, { useEffect } from 'react';
+import React, {useEffect } from 'react';
 import Profile from './pages/Profile';
 import Favorites from './pages/Favorites';
-import BreedFeed from './pages/Breeds';
 import Suggestion from './pages/Suggestion';
+import ManagerUsers from './pages/Users';
 
 function App() {
 
@@ -33,6 +33,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route element={<PrivateRoute />}>
           <Route path="/suggestion" element={<Suggestion />} />
+          <Route path="/users" element={<ManagerUsers />} />
         </Route>
         {user ? '' : <Route path="/login" element={<Login />} />}
         {user ? '' : <Route path="/register" element={<Register />} />}
