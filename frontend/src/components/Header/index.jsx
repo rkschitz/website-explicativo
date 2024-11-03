@@ -27,6 +27,13 @@ export default function Header() {
                         <Link to="/">
                             <li>HOME</li>
                         </Link>
+                        <Link to="/hmtl"><li>HTML</li></Link>
+                        <Link to="/css"><li>CSS</li></Link>
+                        <Link to="/javascript"><li>JAVASCRIPT NO FRONTEND</li></Link>
+                        <Link to="/react"><li>REACT</li></Link>
+                        <Link to="/node"><li>NODE.JS</li></Link>
+                        <Link to="/devops"><li>DEVOPS</li></Link>
+                        {token && <LogoutButton />}
                         <Link to="/suggestion"><li>Sugestões</li></Link>
                         {role === 'admin' && <Link to="/users"><li>Gerenciar Usuários</li></Link>}
                         {token && <Link to="/profile"><li>Perfil</li></Link>}

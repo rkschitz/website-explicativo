@@ -25,7 +25,7 @@ app.use("/api/v1/suggestion", SuggestionRouter)
 const createTables = async () => {
   try {
   
-    await database.db.sync({ force: false }); 
+    await database.db.sync({ force: true }); 
     
     const adminData = {
       nome: 'admin', 
