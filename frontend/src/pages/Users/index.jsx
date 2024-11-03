@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { getUsers, deleteUser, getContext } from "../../api/user"; // Adicione deleteUser aqui
+import { getUsers, deleteUser } from "../../api/user"; // Adicione deleteUser aqui
 import UserModal from "../../components/UserForm";
 import { AuthContext } from "../../auth/Context";
 
@@ -9,12 +9,19 @@ export default function ManagerUsers() {
     const [currentUser, setCurrentUser] = useState(null);
     const [adminIsCreate, setAdminIsCreate] = useState(false);
 
-    const {logout} = useContext(AuthContext);
-
+    const {role} = useContext(AuthContext)
 
     const fetchUsers = async () => {
-        const response = await getContext();
-        setUsers([response]);
+        const response = await getUsers();
+        setUsers(response);
+    };
+
+    const openModalForCreate = () => {
+        if (role === 'admin') {
+            setAdminIsCreate(true)
+        }
+        setCurrentUser(null);
+        setModalIsOpen(true);
     };
 
     const openModalForEdit = (user) => {
@@ -24,7 +31,7 @@ export default function ManagerUsers() {
 
     const handleDelete = async (userId) => {
         await deleteUser(userId);
-        logout();
+        setUsers(users.filter(user => user.id !== userId));
     };
 
     const handleModalClose = async () => {
@@ -39,6 +46,7 @@ export default function ManagerUsers() {
 
     return (
         <div className="container-users">
+            <button onClick={openModalForCreate}>Adicionar Usuário</button>
             {users.map((user) => (
                 <div className="index" key={user.id}>
                     <h1>{user.nome}</h1>
