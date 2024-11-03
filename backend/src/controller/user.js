@@ -37,7 +37,7 @@ class UserController {
     return userValue;
   }
 
-  async update(id, nome, email, senha) {
+  async update(id, nome, email, senha, role) {
     const oldUser = await user.findByPk(id);
     if(email){
       const sameEmail = await user.findOne({ where: { email } });
@@ -50,6 +50,7 @@ class UserController {
     oldUser.senha = senha
       ? await bcrypt.hash(String(senha), SALT_VALUE)
       : oldUser.senha;
+    oldUser.role = role || oldUser.role;
     oldUser.save();
 
     return oldUser;

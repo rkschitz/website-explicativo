@@ -1,50 +1,88 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createUser, loginUser } from '../../api/user';
+import { createUser, loginUser, updateUser } from '../../api/user';
 import { AuthContext } from '../../auth/Context';
 
-function UserModal({ show, handleClose }) {
+function UserModal({ show, handleClose, user, adminIsCreate }) {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [typeUser, setTypeUser] = useState('viewer');
-    const [isLogin, setIsLogin] = useState(true); // Estado para alternar entre Login e Registro
-    const { login, role } = useContext(AuthContext);
+    const [isLogin, setIsLogin] = useState(true);
+    const { login, role, token } = useContext(AuthContext);
 
     const handleSubmit = async () => {
-        if (isLogin) {
-            try {
-                const response = await loginUser(email, senha);
-                if (response.data.token) {
-                    login(response.data.token);
-                    handleClose();
-                }
-            } catch (error) {
-                console.error("Erro ao logar:", error);
-            }
-        } else {
-            const newUser = { nome, email, senha, typeUser };
-            try {
-                const response = await createUser(newUser);
-                if (response) {
-                    const responseLogin = await loginUser(email, senha);
-                    if (responseLogin.data.token) {
-                        login(responseLogin.data.token);
+        if (role === 'admin') {
+            if (adminIsCreate) {
+                const newUser = { nome, email, senha, typeUser };
+                try {
+                    const response = await createUser(newUser);
+                    if (response) {
                         handleClose();
                     }
-                    handleClose();
+                } catch (error) {
+                    console.log("Erro ao registrar:", error);
                 }
-            } catch (error) {
-                console.error("Erro ao registrar:", error);
+            } else {
+                const newUser = { nome, email, senha, typeUser };
+                try {
+                    const response = await updateUser(user.id, newUser);
+                    if (response.status === 200) {
+                        handleClose();
+                    }
+                } catch (error) {
+                    console.log("Erro ao atualizar:", error);
+
+                }
+            }
+        } else {
+            if (!token) {
+                if (isLogin) {
+                    try {
+                        const response = await loginUser(email, senha);
+                        if (response.data.token) {
+                            login(response.data.token);
+                            handleClose();
+                        }
+                    } catch (error) {
+                        console.error("Erro ao logar:", error);
+                    }
+                } else {
+                    const newUser = { nome, email, senha, typeUser };
+                    try {
+                        const response = await createUser(newUser);
+                        if (response) {
+                            const responseLogin = await loginUser(email, senha);
+                            if (responseLogin.data.token) {
+                                login(responseLogin.data.token);
+                                handleClose();
+                            }
+                            handleClose();
+                        }
+                    } catch (error) {
+                        console.error("Erro ao registrar:", error);
+                    }
+                }
+            } else {
+                try {
+                    const newUser = { nome, email, senha, typeUser };
+                    console.log(newUser)
+                    const response = await updateUser(user.id, newUser);
+                    if (response.status === 200) {
+                        handleClose();
+                    }
+                } catch (error) {
+                    console.log("Erro ao atualizar:", error);
+                }
             }
         }
     };
 
     const toggleState = () => {
-        setIsLogin(!isLogin); // Alterna entre Login e Registro
-        resetForm(); // Limpa os campos ao mudar de estado
+        setIsLogin(!isLogin);
+        resetForm();
     };
 
     const resetForm = () => {
@@ -54,14 +92,23 @@ function UserModal({ show, handleClose }) {
         setTypeUser('viewer');
     };
 
+    useEffect(() => {
+        if (user) {
+            setNome(user.nome);
+            setEmail(user.email);
+            setSenha(user.senha);
+            setTypeUser(user.typeUser);
+        }
+    }, [user]);
+
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>{isLogin ? 'Login' : 'Registro'}</Modal.Title>
+                <Modal.Title>{role === 'admin' ? 'Cadastrar usuário' : isLogin ? 'Login' : 'Registro'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form>
-                    {!isLogin && (
+                    {(!isLogin || role === 'admin') && (
                         <div className="mb-3">
                             <label className="form-label">Nome</label>
                             <input
@@ -93,7 +140,7 @@ function UserModal({ show, handleClose }) {
                             required
                         />
                     </div>
-                    {!isLogin && role === 'admin' && (
+                    {role === 'admin' && (
                         <div className="mb-3">
                             <label className="form-label">Tipo de Usuário</label>
                             <select
@@ -107,11 +154,13 @@ function UserModal({ show, handleClose }) {
                             </select>
                         </div>
                     )}
-                    <div className="mb-3">
-                        <button type="button" onClick={toggleState}>
-                            {isLogin ? 'Criar uma conta' : 'Já tem uma conta? Fazer Login'}
-                        </button>
-                    </div>
+                    {(role != 'admin' && !token) &&
+                        (<div className="mb-3">
+                            <button type="button" onClick={toggleState}>
+                                {isLogin ? 'Criar uma conta' : 'Já tem uma conta? Fazer Login'}
+                            </button>
+                        </div>)
+                    }
                 </form>
             </Modal.Body>
             <Modal.Footer>
@@ -119,7 +168,7 @@ function UserModal({ show, handleClose }) {
                     Fechar
                 </Button>
                 <Button variant="primary" onClick={handleSubmit}>
-                    {isLogin ? 'Entrar' : 'Registrar'}
+                    {role === 'admin' ? 'Registrar' : token ? 'Alterar' : isLogin ? 'Entrar' : 'Registrar'}
                 </Button>
             </Modal.Footer>
         </Modal>

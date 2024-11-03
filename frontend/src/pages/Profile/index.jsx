@@ -1,103 +1,57 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../auth/Context"; // Importar o contexto de autenticação
-import { getAllUsers, deleteUser, getContext } from "../../api/user"; // Importar funções de API
-import UserModal from "../../components/UserForm/index"; // Importar seu modal de usuário
-import './styles.css';
+import { useContext, useEffect, useState } from "react";
+import { getUsers, deleteUser, getContext } from "../../api/user"; // Adicione deleteUser aqui
+import UserModal from "../../components/UserForm";
+import { AuthContext } from "../../auth/Context";
 
-export default function Profile() {
-    const { role, id } = useContext(AuthContext); // Obter o papel do usuário
+export default function ManagerUsers() {
     const [users, setUsers] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [isUpdate, setIsUpdate] = useState(false);
-    const [isCreating, setIsCreating] = useState(false); // Novo estado para criar um usuário
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [adminIsCreate, setAdminIsCreate] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (role === 'admin') {
-                await fetchUsers();
-            } else {
-                const response = await getContext();
-                setUsers([response]);
-                console.log(response)
-            }
-        };
-        
-        fetchData();
-    }, [role, isUpdate]);
+    const {logout} = useContext(AuthContext);
+
 
     const fetchUsers = async () => {
-        try {
-            const response = await getAllUsers(); // Chamar a API para obter todos os usuários
-            setUsers(response.data);
-        } catch (error) {
-            console.error("Erro ao buscar usuários:", error);
-        }
+        const response = await getContext();
+        setUsers([response]);
     };
 
-    const handleDeleteUser = async (userId) => {
-        try {
-            await deleteUser(userId); // Chamar a API para excluir o usuário
-            setUsers((prevUsers) => prevUsers.filter(user => user.id !== userId)); // Atualizar a lista de usuários
-        } catch (error) {
-            console.error("Erro ao excluir usuário:", error);
-        }
+    const openModalForEdit = (user) => {
+        setCurrentUser(user);
+        setModalIsOpen(true);
     };
 
-    const handleCreateUser = () => {
-        setSelectedUser(null); // Resetar o usuário selecionado
-        setIsCreating(true); // Indicar que estamos criando um novo usuário
-        setShowModal(true); // Mostrar o modal
+    const handleDelete = async (userId) => {
+        await deleteUser(userId);
+        logout();
     };
+
+    const handleModalClose = async () => {
+        fetchUsers();
+        setModalIsOpen(false);
+        setCurrentUser(null);
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     return (
-        <div className="profile">
-            <h1>Profile</h1>
-            {role === 'admin' ? (
-                <>
-                    <h2>Lista de Usuários</h2>
-                    <button onClick={handleCreateUser}>Adicionar Usuário</button>
-                    <ul>
-                        {users.map(user => (
-                            <li key={user.id}>
-                                <span>{user.nome} ({user.email}) ({user.role})</span>
-                                <button onClick={() => { 
-                                    setSelectedUser(user); 
-                                    setIsCreating(false); // Indicar que estamos alterando um usuário
-                                    setShowModal(true); 
-                                }}>
-                                    Alterar
-                                </button>
-                                <button onClick={() => handleDeleteUser(user.id)}>Excluir</button>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            ) : (
-                <div>
-                    <h2>Seus Dados</h2>
-                    {console.log(users)}
-                     {users.map(user => (
-                        <div key={user.id}>
-                            <span>{user.nome} ({user.email}) ({user.role})</span>
-                            <button onClick={() => { 
-                                setSelectedUser(user); 
-                                setIsCreating(false);
-                                setShowModal(true); 
-                            }}>
-                                Alterar
-                            </button>
-                        </div>
-                    ))}
-                    <button onClick={() => handleDeleteUser(id)}>Excluir Conta</button>
+        <div className="container-users">
+            {users.map((user) => (
+                <div className="index" key={user.id}>
+                    <h1>{user.nome}</h1>
+                    <h1>{user.email}</h1>
+                    <button onClick={() => openModalForEdit(user)}>Alterar</button>
+                    <button onClick={() => handleDelete(user.id)}>Excluir</button>
                 </div>
-            )}
-            <UserModal 
-                show={showModal} 
-                handleClose={() => setShowModal(false)} 
-                setIsUpdate={setIsUpdate} 
-                user={selectedUser}
-                isCreating={isCreating} // Passar o estado de criação para o modal
+            ))}
+            <UserModal
+                show={modalIsOpen}
+                handleClose={handleModalClose}
+                user={currentUser}
+                adminIsCreate={adminIsCreate}
             />
         </div>
     );

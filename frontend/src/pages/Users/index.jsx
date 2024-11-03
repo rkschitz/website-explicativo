@@ -1,41 +1,48 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getUsers, deleteUser } from "../../api/user"; // Adicione deleteUser aqui
 import UserModal from "../../components/UserForm";
+import { AuthContext } from "../../auth/Context";
 
 export default function ManagerUsers() {
     const [users, setUsers] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
+    const [adminIsCreate, setAdminIsCreate] = useState(false);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            const response = await getUsers();
-            setUsers(response);
-            console.log(users)
-        };
-            fetchUsers();
-            
-    }, []);
+    const {role} = useContext(AuthContext)
+
+    const fetchUsers = async () => {
+        const response = await getUsers();
+        setUsers(response);
+    };
 
     const openModalForCreate = () => {
-        setCurrentUser(null); // Para criar um novo usuário
+        if (role === 'admin') {
+            setAdminIsCreate(true)
+        }
+        setCurrentUser(null);
         setModalIsOpen(true);
     };
 
     const openModalForEdit = (user) => {
-        setCurrentUser(user); // Para editar um usuário existente
+        setCurrentUser(user);
         setModalIsOpen(true);
     };
 
     const handleDelete = async (userId) => {
-        await deleteUser(userId); // Implemente a lógica de exclusão na API
+        await deleteUser(userId);
         setUsers(users.filter(user => user.id !== userId));
     };
 
-    const handleModalClose = () => {
+    const handleModalClose = async () => {
+        fetchUsers();
         setModalIsOpen(false);
         setCurrentUser(null);
     };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     return (
         <div className="container-users">
@@ -48,10 +55,11 @@ export default function ManagerUsers() {
                     <button onClick={() => handleDelete(user.id)}>Excluir</button>
                 </div>
             ))}
-            <UserModal 
-                show={modalIsOpen} 
-                handleClose={handleModalClose} 
+            <UserModal
+                show={modalIsOpen}
+                handleClose={handleModalClose}
                 user={currentUser}
+                adminIsCreate={adminIsCreate}
             />
         </div>
     );
