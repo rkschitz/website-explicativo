@@ -3,12 +3,9 @@ const cors = require("cors");
 const database = require("./src/config/database");
 const UserApi = require("./src/api/user");
 const UserRouter = require("./src/routes/user");
-const BreedRouter = require("./src/routes/breed");
+const SuggestionRouter = require("./src/routes/suggestion");
 const User = require("./src/model/user");
-const Breed = require("./src/model/breed");
-const UserBreed = require("./src/model/userBreed");
-const UserBreedRouter = require("./src/routes/userBreed");
-require("./src/model/association");
+// require("./src/model/association");
 
 const app = express();
 app.use(express.json());
@@ -22,14 +19,13 @@ app.post("/api/v1/login", UserApi.login);
 app.post("/api/v1/user", UserApi.createUser);
 
 app.use("/api/v1/user", UserRouter);
-app.use("/api/v1/breed", BreedRouter);
-app.use("/api/v1/userBreed", UserBreedRouter);
+app.use("/api/v1/suggestion", SuggestionRouter)
 
 
 const createTables = async () => {
   try {
   
-    await database.db.sync({ force: false  }); 
+    await database.db.sync({ force: false }); 
     
     const adminData = {
       nome: 'admin', 

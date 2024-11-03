@@ -2,12 +2,19 @@ import { Link } from 'react-router-dom';
 import './styles.css'
 import logo from "../../assets/images/logo.png";
 import LogoutButton from '../Logout';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../auth/Context';
+import UserModal from '../UserForm/index';
 
 export default function Header() {
 
     const { token, role } = useContext(AuthContext);
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleClose = () => {
+        setShowModal(false);
+    }
 
     return (
 
@@ -27,10 +34,17 @@ export default function Header() {
                         <Link to="/node"><li>NODE.JS</li></Link>
                         <Link to="/devops"><li>DEVOPS</li></Link>
                         {token && <LogoutButton />}
+                        <Link to="/suggestion"><li>Sugestões</li></Link>
                         {role === 'admin' && <Link to="/users"><li>Gerenciar Usuários</li></Link>}
+                        {token && <Link to="/profile"><li>Perfil</li></Link>}
+                        {token ? <LogoutButton /> : <li><a onClick={() => setShowModal(true)}>Login</a></li>}
                     </ul>
                 </nav>
             </header>
+            <UserModal
+                show={showModal}
+                handleClose={handleClose}
+            />
         </div>
     )
 }

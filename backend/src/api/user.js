@@ -21,8 +21,12 @@ class UserApi {
 
     async updateUser(req, res) {
         const { id } = req.params;
-        const { nome, email, senha, role } = req.body;
-        let userAdmin = false;
+        const { nome, email, senha } = req.body;
+        const role = req.body.typeUser;
+
+        console.log(nome, email, senha, role)
+
+        let userAdmin;
     
         try {
             const currentUser = await UserController.findUser(req.session.id);

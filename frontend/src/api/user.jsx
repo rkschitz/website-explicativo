@@ -1,7 +1,7 @@
 import api from './api';
 
 export const getUsers = async () => {
-  const response = await api.get('/api/v1/users');
+  const response = await api.get('/api/v1/user');
   return response.data;
 };
 
@@ -22,7 +22,7 @@ export const createUser = async (user) => {
 
 export const updateUser = async (id, user) => {
   const response = await api.put(`/api/v1/user/${id}`, user);
-  return response.data;
+  return response;
 };
 
 export const deleteUser = async (id) => {
