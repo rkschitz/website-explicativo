@@ -27,6 +27,7 @@ export default function Header() {
                         <Link to="/">
                             <li>HOME</li>
                         </Link>
+                        <Link to="/suggestion"><li>Sugestões</li></Link>
                         {role === 'admin' && <Link to="/users"><li>Gerenciar Usuários</li></Link>}
                         {token && <Link to="/profile"><li>Perfil</li></Link>}
                         {token ? <LogoutButton /> : <li><a onClick={() => setShowModal(true)}>Login</a></li>}
