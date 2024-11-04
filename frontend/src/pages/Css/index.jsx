@@ -1,4 +1,3 @@
-// src/pages/Css/index.jsx
 import './styles.css';
 import React, { useState } from 'react';
 
