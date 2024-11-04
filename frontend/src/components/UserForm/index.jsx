@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { createUser, loginUser, updateUser } from '../../api/user';
 import { AuthContext } from '../../auth/Context';
+import { toast } from 'react-toastify';
 
 function UserModal({ show, handleClose, user, adminIsCreate }) {
     const [nome, setNome] = useState('');
@@ -23,7 +24,7 @@ function UserModal({ show, handleClose, user, adminIsCreate }) {
                         handleClose();
                     }
                 } catch (error) {
-                    console.log("Erro ao registrar:", error);
+                   toast("Erro ao registrar:", error);
                 }
             } else {
                 const newUser = { nome, email, senha, typeUser };
@@ -33,7 +34,7 @@ function UserModal({ show, handleClose, user, adminIsCreate }) {
                         handleClose();
                     }
                 } catch (error) {
-                    console.log("Erro ao atualizar:", error);
+                    toast(error.response.data.error);
 
                 }
             }
@@ -47,7 +48,7 @@ function UserModal({ show, handleClose, user, adminIsCreate }) {
                             handleClose();
                         }
                     } catch (error) {
-                        console.error("Erro ao logar:", error);
+                        toast(error.response.data.error);
                     }
                 } else {
                     const newUser = { nome, email, senha, typeUser };
@@ -62,19 +63,18 @@ function UserModal({ show, handleClose, user, adminIsCreate }) {
                             handleClose();
                         }
                     } catch (error) {
-                        console.error("Erro ao registrar:", error);
+                        toast(error.response.data.error);
                     }
                 }
             } else {
                 try {
                     const newUser = { nome, email, senha, typeUser };
-                    console.log(newUser)
                     const response = await updateUser(user.id, newUser);
                     if (response.status === 200) {
                         handleClose();
                     }
                 } catch (error) {
-                    console.log("Erro ao atualizar:", error);
+                    toast(error.response.data.error);
                 }
             }
         }
