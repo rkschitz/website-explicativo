@@ -9,7 +9,6 @@ class SuggestionApi {
             const suggestion = await SuggestionController.createSuggestion(title, description, id);
             return res.status(201).send(suggestion);
         } catch (e) {
-            console.log(e);
             return res.status(400).send({ error: `Erro ao criar sugestão: ${e.message}` });
         }
     }
@@ -17,8 +16,6 @@ class SuggestionApi {
     async updateSuggestion(req, res) {
         const { id } = req.params;
         const { title, description} = req.body;
-
-        console.log('Aquiiiiiiiiiiiiiiiiiiiiiiiiiiii',req.session.role)
 
         try {
             const suggestion = await SuggestionController.updateSuggestion(id, title, description, req.session.role === 'admin' ? true : false);

@@ -36,8 +36,6 @@ class SuggestionController {
         oldSuggestion.description = description || oldSuggestion.description;
         oldSuggestion.validated = validated || oldSuggestion.validated;
 
-        console.log(oldSuggestion)
-
         oldSuggestion.save();
 
         return oldSuggestion;
@@ -49,7 +47,6 @@ class SuggestionController {
         }
 
         const suggestionValue = await suggestion.findByPk(id);
-        console.log('Aquiii', suggestionValue)
         suggestionValue.destroy();
 
         return;
