@@ -1,6 +1,5 @@
-
 import './styles.css';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function HtmlPage() {
   const [expandedTag, setExpandedTag] = useState(null);
@@ -52,7 +51,7 @@ export default function HtmlPage() {
             onClick={() => handleExpand(element.tag)}
           >
             <span className="element-tag">{element.tag}</span>
-            {expandedTag === element.tag && ( // Exibe a descricao quando clica
+            {expandedTag === element.tag && ( 
               <p className="element-description">{element.description}</p>
             )}
           </div>
