@@ -13,19 +13,19 @@ export default function HtmlPage() {
     },
     { 
       tag: "p", 
-      description: "Define um parágrafo de texto, ideal para agrupar e formatar blocos de texto com espaçamento adequado entre parágrafos." 
+      description: "Define um parágrafo de texto, sendo um dos elementos fundamentais para estruturar o conteúdo textual em uma página HTML. Por padrão, os parágrafos são exibidos com espaçamento vertical entre eles, tornando o texto mais legível. Pode conter texto, elementos inline (como 'span', 'a', 'em', 'strong') e entidades HTML. É frequentemente usado em conjunto com CSS para estilização, como ajuste de margens, alinhamento, cor e fontes." 
     },
     { 
       tag: "a", 
-      description: "Cria um link que permite ao usuário navegar para outra página ou documento. Pode ter atributos como 'href' para definir o destino e 'target' para abrir em uma nova guia." 
+      description:  "Define um hyperlink, usado para criar links que permitem aos usuários navegar para outras páginas, documentos, seções da mesma página ou até mesmo disparar ações específicas. O principal atributo da tag é 'href', que especifica o destino do link, como URLs absolutas ('https://example.com') ou relativas ('/about'). Pode conter texto, imagens ou outros elementos inline como conteúdo clicável. Outros atributos comuns incluem: 'target', que define como o link será aberto (por exemplo, '_blank' abre em uma nova aba); 'rel', que especifica a relação do link com a página atual (como 'nofollow' ou 'noopener'); e 'download', que permite baixar o arquivo referenciado no 'href'. Para links internos dentro da mesma página, o 'href' pode usar um identificador (exemplo: '#section1') para navegar até uma âncora. Além disso, a tag 'a' pode ser estilizada com CSS para mudar a aparência (cor, sublinhado, etc.) e oferece suporte a eventos JavaScript, como 'onclick', para ações personalizadas. É importante garantir que os links sejam acessíveis, fornecendo descrições claras no texto e evitando URLs vazias ou não funcionais."
     },
     { 
       tag: "img", 
-      description: "Exibe uma imagem na página. Atributos como 'src' definem a URL da imagem e 'alt' fornece uma descrição alternativa para acessibilidade." 
+      description: "Exibe uma imagem na página, sendo um elemento inline. O atributo obrigatório 'src' define a URL da imagem, que pode ser um caminho absoluto (ex: 'https://example.com/image.jpg') ou relativo (ex: '/images/logo.png'). O atributo 'alt' é essencial para acessibilidade, fornecendo uma descrição textual da imagem para leitores de tela ou caso a imagem não possa ser carregada. Outros atributos incluem: 'width' e 'height', que definem as dimensões da imagem (em pixels ou porcentagem); 'title', que adiciona um texto explicativo exibido ao passar o mouse sobre a imagem; 'loading', que pode ser configurado como 'lazy' para carregar imagens sob demanda, melhorando a performance; e 'crossorigin', usado para controle de segurança em imagens de outras origens. A tag pode ser estilizada com CSS para manipular bordas, sombras, redimensionamento e alinhamento. Boas práticas incluem o uso de imagens otimizadas para melhorar o desempenho da página e manter a proporção correta ao redimensionar. Além disso, é possível combinar a tag `<img>` com `<picture>` e `<source>` para adaptar imagens responsivas e específicas para diferentes dispositivos ou resoluções."  
     },
     { 
       tag: "div", 
-      description: "É um contêiner genérico usado para agrupar e organizar outros elementos, essencial para o layout da página. É amplamente utilizado com CSS para estilização e posicionamento." 
+      description: "É um elemento de bloco genérico usado para agrupar outros elementos HTML e organizar o layout da página. Pode conter elementos de bloco (como 'p', 'h1', 'ul') ou inline (como 'span', 'a', 'img'), tornando-o extremamente versátil. A tag pode ser estilizada com CSS para definir dimensões, cores de fundo, bordas, alinhamento, espaçamento, entre outros. Além disso, é comumente utilizada para criar contêineres que recebem classes ou IDs para estilização ou manipulação com scripts. Atributos como 'id' e 'class' são fundamentais para identificar e aplicar estilos ou comportamentos específicos a uma `<div>`. Em layouts responsivos, `<div>`s frequentemente atuam como contêineres ou colunas, sendo combinados com frameworks CSS ou JavaScript para construir interfaces dinâmicas e bem organizadas." 
     },
   ];
 
