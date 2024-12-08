@@ -13,6 +13,7 @@ export default function CssPage() {
     { property: "border", description: "Define a borda ao redor de um elemento. Você pode especificar a largura, estilo (sólido, tracejado, etc.) e cor." },
     { property: "display", description: "Controla como um elemento é exibido na página. As opções incluem block, inline, flex, grid, entre outros." },
     { property: "position", description: "Define como um elemento é posicionado na página. Você pode usar valores como static, relative, absolute e fixed." },
+    { property: "Curiosidades", description: "1. CSS foi criado em 1996, quase ao mesmo tempo que a web estava se estruturando. Ele foi desenvolvido pela W3C para separar a estrutura do conteúdo (HTML) da apresentação (design). 2. O CSS foi inspirado em estilos de impressora! A ideia de separar o conteúdo da formatação veio da necessidade de controlar a aparência de documentos impressos. 3. CSS tem propriedades extremamente peculiares e avançadas! O CSS oferece muitas propriedades que podem parecer estranhas, mas são extremamente poderosas. Por exemplo 'clip-path': Permite cortar partes de elementos com formas personalizadas.filter: Você pode aplicar filtros fotográficos como brilho, contraste, desaturação, ou até mesmo borrão (blur) apenas com CSS.backdrop-filter: Um recurso para adicionar efeitos de desfoque ao fundo de elementos." }
   ];
 
   const handleExpand = (property) => {
@@ -31,8 +32,8 @@ export default function CssPage() {
 
       <div className="properties-container">
         {items.map((item, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className={`property ${expandedItem === item.property ? 'expanded' : ''}`}
             onClick={() => handleExpand(item.property)}
           >

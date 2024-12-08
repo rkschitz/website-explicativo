@@ -12,6 +12,7 @@ import Css from "./pages/Css";
 import JavaScript from "./pages/JavaScript";
 import ReactPage from "./pages/React";
 import Node from "./pages/Node";
+import DevOps from "../src/pages/DevOps";  
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,6 +33,7 @@ function App() {
         <Route path="/javascript" element={<JavaScript />} />
         <Route path="/react" element={<ReactPage />} />
         <Route path="/node" element={<Node />} />
+        <Route path="/devops" element={<DevOps />} />
       </Routes>
       <ToastContainer
         position="bottom-center"

@@ -11,6 +11,7 @@ export default function NodePage() {
     { element: "Middleware", description: "Funções que têm acesso ao objeto de solicitação e resposta, permitindo manipular requisições e respostas." },
     { element: "Asynchronous Programming", description: "Node.js é projetado para operações assíncronas, utilizando callbacks, Promises e async/await." },
     { element: "RESTful APIs", description: "Node.js é amplamente usado para construir APIs RESTful, permitindo que diferentes aplicações se comuniquem." },
+    { element: "Curiosidades ", description: "1. Baseado em café: O logo oficial do Node.js tem um design que lembra grãos de café. Isso porque seu criador, Ryan Dahl, é fã de café, assim como muitos programadores. 2. Primeira aplicação de Node.js: Uma das primeiras coisas feitas com Node.js foi um servidor que simplesmente respondia 'Hello World' para qualquer requisição. Isso virou o exemplo mais famoso para iniciantes. 3. Node.js tornou o JavaScript um super-herói!Antes do Node.js, o JavaScript era basicamente usado apenas para desenvolvimento front-end no navegador. Com ele, o JavaScript foi para o servidor, fazendo com que desenvolvedores pudessem usar a mesma linguagem no backend, o que muitos chamaram de 'superpoderes'." },
   ];
 
   const handleExpand = (element) => {
